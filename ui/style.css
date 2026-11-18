@@ -1,0 +1,338 @@
+/* Travel Guardian dark theme.
+   Bootstrap's own dark mode is switched on in index.html (data-bs-theme="dark").
+   This file sets our colours on top of it. */
+
+/* All the colours live here, so the theme can be changed in one place. */
+:root {
+    --tg-background: #0e1117;   /* window background */
+    --tg-panel: #171b24;        /* cards that sit on the background */
+    --tg-border: #262c38;       /* thin lines around cards */
+    --tg-text: #e6e9ef;         /* main text */
+    --tg-muted: #8b93a3;        /* less important text */
+    --tg-accent: #4f8cff;       /* buttons, links, ticked boxes */
+    --tg-accent-hover: #6b9fff;
+    --tg-neon: #00e5ff;         /* bright glow colour for cards and the Scan button */
+    --tg-neon-soft: rgba(0, 229, 255, 0.35);
+}
+
+/* Tell Bootstrap to use our colours instead of its defaults. */
+[data-bs-theme="dark"] {
+    --bs-body-bg: var(--tg-background);
+    --bs-body-color: var(--tg-text);
+    --bs-secondary-color: var(--tg-muted);
+    --bs-border-color: var(--tg-border);
+    --bs-link-color-rgb: 79, 140, 255;
+    --bs-link-hover-color-rgb: 107, 159, 255;
+}
+
+/* The page is a column as tall as the window, so a screen can stretch to fill it. */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+    font-size: 15px;
+}
+
+/* First screen: takes all the space under the network name.
+   The button's "margin: auto" centres it in the free space,
+   which pushes the card down to the bottom of the window. */
+#consent-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* The warning text in the bottom card (plain text, no box of its own). */
+.consent-warning {
+    color: #f5c563;
+}
+
+/* The notice line takes no space while it is empty. */
+#notice:empty {
+    display: none;
+}
+
+/* Hide the scroll bar. The page still scrolls with the mouse wheel or touchpad. */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* App title: small, spaced-out capitals with the logo in front. */
+.app-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tg-muted);
+}
+
+/* The logo next to the title: a shield with a map pin inside. */
+.app-logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    vertical-align: -5px;
+}
+
+.logo-shield {
+    fill: rgba(79, 140, 255, 0.15);
+    stroke: var(--tg-accent);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+}
+
+.logo-pin {
+    fill: var(--tg-accent);
+}
+
+.logo-dot {
+    fill: var(--tg-background);
+}
+
+/* Section headings inside the results. */
+.section-title {
+    margin-top: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tg-muted);
+}
+
+/* Each screen is a rounded card with a neon glow around it.
+   box-shadow with no offset and a blur makes the glow. */
+section {
+    padding: 16px;
+    border: 1px solid var(--tg-neon-soft);
+    border-radius: 14px;
+    background: var(--tg-panel);
+    box-shadow: 0 0 14px var(--tg-neon-soft);
+}
+
+#network-name {
+    font-size: 18px;
+}
+
+/* The round Scan button: a glowing ring with the word in the middle. */
+.scan-button {
+    position: relative;
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 16px;      /* centred, with a gap before the hint text */
+    border: 2px solid var(--tg-neon);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.18), transparent 70%);
+    color: var(--tg-text);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding-left: 0.14em;   /* balances the gap letter-spacing adds after the last letter */
+    text-transform: uppercase;
+    box-shadow: 0 0 20px var(--tg-neon-soft), inset 0 0 20px var(--tg-neon-soft);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.scan-button:hover {
+    box-shadow: 0 0 32px var(--tg-neon), inset 0 0 24px var(--tg-neon-soft);
+    transform: scale(1.03);
+}
+
+/* A second ring that grows and fades, over and over, to invite a click. */
+.scan-button::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border: 2px solid var(--tg-neon);
+    border-radius: 50%;
+    animation: scan-pulse 2s ease-out infinite;
+}
+
+@keyframes scan-pulse {
+    from { transform: scale(1); opacity: 0.7; }
+    to   { transform: scale(1.3); opacity: 0; }
+}
+
+/* Until the consent box is ticked the button is grey and still. */
+.scan-button:disabled {
+    border-color: var(--tg-border);
+    background: none;
+    color: var(--tg-muted);
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+}
+
+.scan-button:disabled::after {
+    display: none;
+}
+
+/* The button and the hint under it, centred in the free space (both ways). */
+.scan-area {
+    margin: auto;
+    text-align: center;
+}
+
+#scan-hint {
+    min-height: 1.5em;   /* keeps its space when empty, so the button doesn't jump */
+    margin: 0;
+}
+
+/* --- While scanning (app.js adds "is-scanning" to the first screen) --- */
+
+/* Hide the bottom card. visibility keeps its space, so the button stays put. */
+.is-scanning section {
+    visibility: hidden;
+}
+
+/* The button is disabled during a scan, but should still look alive. */
+.is-scanning .scan-button {
+    border-color: var(--tg-neon-soft);
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.18), transparent 70%);
+    color: var(--tg-text);
+    font-size: 15px;
+    box-shadow: 0 0 20px var(--tg-neon-soft), inset 0 0 20px var(--tg-neon-soft);
+    cursor: progress;
+}
+
+/* Loading effect: an outer ring with one bright quarter, spinning round. */
+.is-scanning .scan-button::after {
+    display: block;
+    inset: -12px;
+    border: 3px solid transparent;
+    border-top-color: var(--tg-neon);
+    animation: scan-spin 1s linear infinite;
+}
+
+@keyframes scan-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Bootstrap's main button style (kept for any normal buttons). */
+.btn-primary {
+    --bs-btn-bg: var(--tg-accent);
+    --bs-btn-border-color: var(--tg-accent);
+    --bs-btn-hover-bg: var(--tg-accent-hover);
+    --bs-btn-hover-border-color: var(--tg-accent-hover);
+    --bs-btn-active-bg: var(--tg-accent);
+    --bs-btn-active-border-color: var(--tg-accent);
+    --bs-btn-disabled-bg: var(--tg-border);
+    --bs-btn-disabled-border-color: var(--tg-border);
+    --bs-btn-disabled-color: var(--tg-muted);
+    --bs-btn-disabled-opacity: 1;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Smaller grey buttons (Show details, Scan again). */
+.btn-outline-secondary {
+    --bs-btn-color: var(--tg-text);
+    --bs-btn-border-color: var(--tg-border);
+    --bs-btn-hover-bg: var(--tg-border);
+    --bs-btn-hover-border-color: var(--tg-border);
+    --bs-btn-active-bg: var(--tg-border);
+    --bs-btn-active-border-color: var(--tg-border);
+    border-radius: 8px;
+}
+
+/* Consent tick box. */
+.form-check-input:checked {
+    background-color: var(--tg-accent);
+    border-color: var(--tg-accent);
+}
+
+/* Risk shield in the top right corner of the window (results screen only).
+   app.js adds risk-Low, risk-Medium or risk-High, which sets the colour. */
+.status {
+    position: absolute;      /* placed against the window, not inside the card */
+    top: 12px;
+    right: 16px;
+    width: 76px;
+    height: 92px;
+    display: flex;           /* stack the two lines of text and centre them */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;    /* the shield narrows at the bottom, so sit the text higher */
+}
+
+/* The shield drawing fills the badge and sits behind the text.
+   currentColor = the badge's text colour, so the shield and its glow
+   turn green, amber or red together with the words. */
+.status-shield {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: currentColor;
+    fill-opacity: 0.15;
+    stroke: currentColor;
+    stroke-width: 0.6;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 5px currentColor);
+}
+
+#status-text {
+    position: relative;      /* keeps the words above the shield drawing */
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.status-label {
+    position: relative;
+    margin: 0;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.risk-Low {
+    color: #5fe0a2;
+}
+
+.risk-Medium {
+    color: #f5c563;
+}
+
+.risk-High {
+    color: #ff8585;
+}
+
+/* Space between the shield above and the results card. */
+#results-screen section {
+    margin-top: 20px;
+}
+
+/* Divider lines between the parts of the results. */
+hr {
+    margin: 14px 0;
+    border-color: var(--tg-neon-soft);
+    opacity: 1;
+}
+
+/* A heading after a line, or at the top of the card, doesn't need its own extra gap. */
+hr + .section-title,
+.section-title:first-child {
+    margin-top: 0;
+}
+
+/* The notes list gets the same line above it, but only when it has items. */
+#message-list:not(:empty) {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--tg-neon-soft);
+}
+
+/* Lists: less indent so they fit the narrow window. */
+ul {
+    padding-left: 18px;
+}
+
+li {
+    margin-bottom: 4px;
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <title>Travel Guardian</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="p-3">
+
+    <h1 class="app-title mb-3">
+        <!-- Logo: a shield (guardian) with a map pin inside (travel). Drawn as SVG so it works offline. -->
+        <svg class="app-logo" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="logo-shield" d="M12 2 L20 5 V11 C20 16 16.5 20 12 22 C7.5 20 4 16 4 11 V5 Z" />
+            <path class="logo-pin" d="M12 7 a3.2 3.2 0 0 0 -3.2 3.2 c0 2.4 3.2 5.6 3.2 5.6 s3.2 -3.2 3.2 -5.6 A3.2 3.2 0 0 0 12 7 Z" />
+            <circle class="logo-dot" cx="12" cy="10.2" r="1.1" />
+        </svg>
+        Travel Guardian
+    </h1>
+    
+    <div>
+        <p class="text-secondary small mb-1">Connected to</p>
+        <p id="network-name" class="fw-semibold">Checking...</p>
+    </div>
+
+    <!-- Screen 1: consent and scanning -->
+    <!-- The outer div fills the rest of the window: the Scan button floats in the
+         middle of the free space and the card sits at the bottom.
+         While a scan runs, app.js adds the class "is-scanning" to this div,
+         which hides the card and turns the button into a loading ring. -->
+    <div id="consent-screen">
+        <div class="scan-area">
+            <button id="scan-button" class="scan-button" disabled>Scan</button>
+            <p id="scan-hint" class="small text-secondary"></p>
+        </div>
+
+        <section>
+            <p class="consent-warning small">
+                Only scan networks you're allowed to use. The scan checks this Wi-Fi and your own laptop.
+            </p>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="consent-box">
+                <label class="form-check-label small" for="consent-box">I'm allowed to use this network</label>
+            </div>
+        </section>
+    </div>
+
+    <!-- Screen 2: results -->
+    <div id="results-screen" hidden>
+        <!-- Risk shield: sits in the top right corner of the window, outside the card.
+             The SVG draws the shield shape; the two lines of text sit on top of it. -->
+        <div id="status-badge" class="status">
+            <svg class="status-shield" viewBox="3 1 18 22" aria-hidden="true">
+                <path d="M12 2 L20 5 V11 C20 16 16.5 20 12 22 C7.5 20 4 16 4 11 V5 Z" />
+            </svg>
+            <p id="status-text"></p>
+            <p class="status-label">risk</p>
+        </div>
+
+        <section>
+            <!-- Each <hr> draws a thin line between two parts of the results. -->
+            <h2 class="section-title">What this means</h2>
+            <p id="summary" class="small"></p>
+            <!-- AI disclosure: tells the user this paragraph comes from an AI model
+                 and gives the "Built with Llama" credit the model's licence asks for. -->
+            <p class="small text-secondary">Written by an offline AI (Built with Llama). It can make mistakes; check Show details.</p>
+
+            <hr>
+            <h2 class="section-title">What to do</h2>
+            <ul id="advice-list" class="small"></ul>
+
+            <!-- Notes. style.css draws this list's top line only when it has items. -->
+            <ul id="message-list" class="small text-secondary"></ul>
+
+            <hr>
+            <div class="d-flex gap-2">
+                <button id="details-button" class="btn btn-outline-secondary btn-sm flex-fill">Show details</button>
+                <button id="again-button" class="btn btn-outline-secondary btn-sm flex-fill">Scan again</button>
+            </div>
+
+            <!-- Screen 3: details, opened on request -->
+            <div id="details" hidden>
+                <hr>
+                <h2 class="section-title">All findings</h2>
+                <ul id="findings-list" class="small"></ul>
+                <h2 class="section-title">Devices found</h2>
+                <!-- Addresses only. Other people's devices are found, never port-scanned. -->
+                <ul id="device-list" class="small"></ul>
+                <p id="wifi-details" class="small text-secondary"></p>
+            </div>
+
+            <hr>
+            <button id="clear-button" class="btn btn-link btn-sm p-0">Clear session</button>
+            <span class="small text-secondary">Nothing is saved.</span>
+        </section>
+    </div>
+
+    <p id="notice" class="small text-success mt-2"></p>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

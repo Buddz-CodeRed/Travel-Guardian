@@ -1,0 +1,25 @@
+# Virtual environments
+tg_env/
+.venv/
+
+# Model files are large; download separately
+models/*.gguf
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Build output
+build/
+dist/
+*.spec
+
+# Personal and course files (kept on this PC, not uploaded)
+docs/
+GUIDE.md
+CLAUDE.md
+Proposal.docx
+
+# Editor and test caches
+.vscode/
+.pytest_cache/

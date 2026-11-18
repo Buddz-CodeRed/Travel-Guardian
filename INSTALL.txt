@@ -1,0 +1,78 @@
+Travel Guardian - installing on a Windows PC
+============================================
+
+Travel Guardian checks the Wi-Fi you are connected to and your own laptop,
+and explains the risks in plain English. Everything runs on this PC; nothing
+is sent to the internet and nothing is saved after you close it.
+
+Only scan networks you are allowed to use.
+
+
+1. Copy Travel Guardian onto the PC
+-----------------------------------
+  - Right-click TravelGuardian.zip > Extract All, and extract it to a folder,
+    for example your Documents folder.
+    Don't run TravelGuardian.exe from inside the zip window: Windows then
+    copies only the .exe and it fails with "python312.dll not found".
+  - Keep all the files together. TravelGuardian.exe needs the "_internal"
+    folder next to it.
+
+
+2. Install Nmap (once, needs internet)
+--------------------------------------
+Travel Guardian uses Nmap to find devices and check your laptop's ports.
+Nmap can't be included in the zip (its Npcap licence doesn't allow it), so:
+
+  - Double-click Setup.bat in the extracted folder. It downloads the official
+    Nmap installer from nmap.org, checks it is genuine, and starts it.
+  - Click Yes when Windows asks, then keep the default options. Nmap also
+    installs Npcap; keep that ticked.
+  - If Setup.bat can't do it, download the installer yourself from
+    https://nmap.org/download.html ("Latest stable release self-installer").
+
+
+3. Start it
+-----------
+  - Right-click TravelGuardian.exe > Run as administrator, then click Yes
+    when Windows asks "Do you want to allow this app to make changes?".
+    (Administrator rights let the device search work fully.)
+  - A plain double-click also works, but the device search is less complete
+    and the window shows "Run as Administrator for a more complete device
+    search."
+  - Optional: right-click TravelGuardian.exe > Show more options >
+    Send to > Desktop (create shortcut).
+
+The first scan takes about 30 seconds.
+
+
+If something goes wrong
+-----------------------
+  - "Failed to load Python DLL ... python312.dll": TravelGuardian.exe was
+    started without its "_internal" folder. Extract the whole zip (step 2)
+    and run TravelGuardian.exe from the extracted TravelGuardian folder.
+  - "Nmap isn't installed on this PC": run Setup.bat (step 2), then restart the app.
+  - "Failed to resolve Python.Runtime.Loader.Initialize": Windows blocked the
+    files because the zip was downloaded. The app normally fixes this itself;
+    if it doesn't, right-click TravelGuardian.zip > Properties > tick Unblock >
+    OK, then extract it again.
+  - "Turn on Windows Location service": Settings > Privacy & security >
+    Location > turn Location services on. Windows needs it to report the
+    Wi-Fi details.
+  - "AI explanation unavailable": the app still works and shows standard
+    advice. The "_internal\models" folder may be missing; copy the whole
+    folder again.
+  - Windows SmartScreen says "Windows protected your PC": click
+    More info > Run anyway. The app is not signed by a publisher.
+
+Requirements: Windows 10 or 11 (64-bit), about 1.2 GB of free space.
+
+
+About the AI
+------------
+"What this means" is written by an AI model that runs on this PC
+(Llama 3.2 1B). It only rewords the findings; the risk level and the advice
+come from fixed rules. AI can make mistakes, so check "Show details".
+
+Built with Llama.
+Llama 3.2 is licensed under the Llama 3.2 Community License, Copyright (c) Meta
+Platforms, Inc. All Rights Reserved. See LICENSE.txt and NOTICE.txt in this folder.

@@ -1,0 +1,6 @@
+python-nmap
+psutil
+pywebview
+llama-cpp-python
+pytest
+pyinstaller
